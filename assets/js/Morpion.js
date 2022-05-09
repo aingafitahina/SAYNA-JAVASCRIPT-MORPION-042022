@@ -1,137 +1,226 @@
 (function() {
+    var joueur = {
+        nom: "joueur",
+        symbole : "X",
+        score: 0 
 
+
+    };
+
+    var CPU = {
+        nom : "CPU",
+        symbole : "0",
+        score : 0
+    };
+
+    var players = [joueur,CPU];
+    var stop = false;
+    var tour= Math.floor(Math.random() * 2);
+    var tour_des_joueurs = tour;
+    var joueurActuel = tour_des_joueurs;
+    //affichage par choix
+    choose1=function(elmt){
+        joueur.symbole=elmt.textContent;
+        CPU.symbole="O"
+        elmt.parentNode.parentNode.style.display="none";
+        onload();
+    }
+    choose2=function(elmt){
+        joueur.symbole=elmt.textContent;
+        CPU.symbole="X";
+        elmt.parentNode.parentNode.style.display="none";
+        onload();
+    }
     // Récupération des cases à clicker
     const items = document.getElementsByClassName('grid-item');
 
-    function choiseCase(id) {
-
-    }
-
-    // Vide le contenu de toute les cases
-    function rest() {
-        for (var i = 0; i < items.length; i++) {
-            console.log(items[i]);
-            items[i].textContent = ''
+    choiseCase = function(id) {
+        if( players[joueurActuel].nom == "joueur" && document.getElementById(id).classList.contains("marqué")==false && stop==false)
+        {
+            document.getElementById(id).textContent = joueur.symbole;
+            document.getElementById(id).classList.add("marqué");
+            verification(joueur);
+            joueurActuel++;
+             
+        if(joueurActuel > 1)
+        {   
+            joueurActuel = 0;
         }
-    }
+            var boucle=0;
+            for (let i = 0; i< items.length; i++) {
+               if(items[i].classList.contains("marqué"))boucle++;
+            }
+            if(boucle==9){
 
-})();
-
-var grif =['item1','item2','item3','item4','item5','item6','item7','item8','item9',]
-var ar1,ar2,ar3,ar4,ar5,ar6,ar7,ar8 = [];
-var success;
-var gameOver = false;
-var arr =[];
-var clicked = 0; // on va incrémenter celui ci après
-var choice = 9;
-var playerScore = 0;
-var cpuScore = 0;
-
-var player = {
-    name : 'joueur1',
-    team : '',
-    arr : []
-}
-
-var cpu = {
-    name : 'cpu',
-    team : '',
-    arr : []
-}
-
-$('.cpu-score').html(cpuScore);
-$('.you-score').html(playerScore); 
-
-function findElement (check){
-    ar1 =['item1','item2','item3',];
-    ar2 =['item4','item5','item6',];
-    ar3 =['item7','item8','item9',];
-    ar4 =['item1','item4','item7',];
-    ar5 =['item2','item5','item8',];
-    ar6 =['item3','item6','item9',];
-    ar7 =['item1','item5','item9',];
-    ar8 =['item3','item5','item7',];
-
-success;
-
-switch (true) {
-    case success = ar1.every(function(val) {
-        return check.arr.indexOf(val) !==-1;
-}):
-    gameOver = true;
-    winning(ar1); // function winning
-    setTimeout (on, 700, check.name);
-    break;
-
-    case success = ar2.every(function(val){
-        return check.arr.indexOf(val) !==-1;
-}):
-    gameOver = true;
-    winning(ar2);
-    setTimeout (on, 700, check.name);
-    break;
-
-    case success = ar3.every(function(val){
-        return check.arr.indexOf(val) !==-1;
-}):
-    gameOver = true;
-    winning(ar3);
-    setTimeout (on, 700, check.name);
-    break;
-
-    case success = ar3.every(function(val){
-        return check.arr.indexOf(val) !==-1;
-}):
-    gameOver = true;
-    winning(ar3);
-    setTimeout (on, 700, check.name);
-    break;
-
-    case success = ar4.every(function(val){
-        return check.arr.indexOf(val) !==-1;
-}):
-    gameOver = true;
-    winning(ar4);
-    setTimeout (on, 700, check.name);
-    break;
-
-    case success = ar5.every(function(val){
-        return check.arr.indexOf(val) !==-1;
-    }):
-    gameOver = true;
-    winning(ar5);
-    setTimeout (on, 700, check.name);
-    break;
-
-    case success = ar6.every(function(val){
-        return check.arr.indexOf(val) !==-1;
-    }):
-    gameOver = true;
-    winning(ar6);
-    setTimeout (on, 700, check.name);
-    break;
-
-    case success = ar7.every(function(val){
-        return check.arr.indexOf(val) !==-1;
-    }):
-    gameOver = true;
-    winning(ar7);
-    setTimeout (on, 700, check.name);
-    break;
-
-    case success = ar8.every(function(val){
-        return check.arr.indexOf(val) !==-1;
-    }):
-    gameOver = true;
-    winning(ar8);
-    setTimeout (on, 700, check.name);
-    break;
-}
-
-}
-
-function choiseCase(clicked_id){
-    if( clicked %2 ==0){
+            }else{
+                bot();
+            }
+        }
+         
         
     }
+      function onload(){
+        if(players[joueurActuel].nom=="CPU"){
+            var boucle=0;
+            for (let i = 0; i< items.length; i++) {
+               if(items[i].classList.contains("marqué"))boucle++;
+            }
+            if(boucle==9){
+
+            }else{
+                bot();
+            }
+        }
+        }   
+    bot = function() {
+        if(stop ==false && players[joueurActuel].nom == "CPU" )
+        {
+            var bot_choose = Math.floor(Math.random() * 9);
+            while(items[bot_choose].classList.contains("marqué") ){
+                bot_choose = Math.floor(Math.random() * 9);
+            }    
+            items[bot_choose].textContent = CPU.symbole;
+            items[bot_choose].classList.add("marqué");
+            verification(CPU);
+            joueurActuel++;
+            if(joueurActuel > 1)
+            {
+                joueurActuel = 0;
+            }
+    
+        }
+
+    }
+    
+function verification(player){
+    var verif1 = items[0].textContent==player.symbole && items[1].textContent==player.symbole && items[2].textContent==player.symbole
+    var verif2 = items[3].textContent==player.symbole && items[4].textContent==player.symbole && items[5].textContent==player.symbole
+    var verif3 = items[6].textContent==player.symbole && items[7].textContent==player.symbole && items[8].textContent==player.symbole
+    var verif4 = items[0].textContent==player.symbole && items[3].textContent==player.symbole && items[6].textContent==player.symbole
+    var verif5 = items[1].textContent==player.symbole && items[4].textContent==player.symbole && items[7].textContent==player.symbole
+    var verif6 = items[2].textContent==player.symbole && items[5].textContent==player.symbole && items[8].textContent==player.symbole
+    var verif7 = items[0].textContent==player.symbole && items[4].textContent==player.symbole && items[8].textContent==player.symbole
+    var verif8 = items[2].textContent==player.symbole && items[4].textContent==player.symbole && items[6].textContent==player.symbole
+        if (verif1){
+             
+            stop=true;
+            player.score++;
+            items[0].style.color="#00ffdd"
+            items[1].style.color="#00ffdd"
+            items[2].style.color="#00ffdd"
+            if(player.nom=="joueur"){
+                document.querySelector(".you-score").textContent=player.score;
+            }else{
+                document.querySelector(".cpu-score").textContent=CPU.score;
+            }
+        }
+        else if (verif2){
+              
+            stop=true;
+            player.score++;
+            items[3].style.color="#00ffdd"
+            items[4].style.color="#00ffdd"
+            items[5].style.color="#00ffdd"
+            if(player.nom=="joueur"){
+                document.querySelector(".you-score").textContent=player.score;
+            }else{
+                document.querySelector(".cpu-score").textContent=CPU.score;
+            }
+        }
+        else if (verif3){
+            
+            stop=true;
+            player.score++;
+            items[6].style.color="#00ffdd"
+            items[7].style.color="#00ffdd"
+            items[8].style.color="#00ffdd"
+            if(player.nom=="joueur"){
+                document.querySelector(".you-score").textContent=player.score;
+            }else{
+                document.querySelector(".cpu-score").textContent=CPU.score;
+            }
+        }
+        else if (verif4){
+            
+            stop=true;
+            player.score++;
+            items[0].style.color="#00ffdd"
+            items[3].style.color="#00ffdd"
+            items[6].style.color="#00ffdd"
+            if(player.nom=="joueur"){
+                document.querySelector(".you-score").textContent=player.score;
+            }else{
+                document.querySelector(".cpu-score").textContent=CPU.score;
+            }
+        }   
+        else if (verif5){
+         
+            stop=true;
+            player.score++;
+            items[1].style.color="#00ffdd"
+            items[4].style.color="#00ffdd"
+            items[7].style.color="#00ffdd"
+            if(player.nom=="joueur"){
+                document.querySelector(".you-score").textContent=player.score;
+            }else{
+                document.querySelector(".cpu-score").textContent=CPU.score;
+            }
+        }
+        else if (verif6){
+           
+            stop=true;
+            player.score++;
+            items[2].style.color="#00ffdd"
+            items[5].style.color="#00ffdd"
+            items[8].style.color="#00ffdd"
+            if(player.nom=="joueur"){
+                document.querySelector(".you-score").textContent=player.score;
+            }else{
+                document.querySelector(".cpu-score").textContent=CPU.score;
+            }
+        }
+        else if (verif7){
+             
+            stop=true;
+            player.score++;
+            items[0].style.color="#00ffdd"
+            items[4].style.color="#00ffdd"
+            items[8].style.color="#00ffdd"
+            if(player.nom=="joueur"){
+                document.querySelector(".you-score").textContent=player.score;
+            }else{
+                document.querySelector(".cpu-score").textContent=CPU.score;
+            }
+        }
+        else if (verif8){
+             
+            stop=true;
+            player.score++;
+            items[2].style.color="#00ffdd"
+            items[4].style.color="#00ffdd"
+            items[6].style.color="#00ffdd"
+            if(player.nom=="joueur"){
+                document.querySelector(".you-score").textContent=player.score;
+            }else{
+                document.querySelector(".cpu-score").textContent=CPU.score;
+            }
+        }
+        
 }
+    // Vide le contenu de toute les cases
+    rest = function() {
+        stop= false;
+        for (var i = 0; i < items.length; i++) {
+            items[i].textContent = ''
+            items[i].classList.remove("marqué");
+            items[i].style.color = '#000'
+        }
+        CPU.score = 0;
+        joueur.score = 0;
+
+        tour_des_joueurs++;
+        bot();
+        document.querySelector(".you-score").textContent= 0;
+        document.querySelector(".cpu-score").textContent = 0;            
+    }
+})();
